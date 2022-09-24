@@ -1,6 +1,7 @@
 export type ItemType = {
     id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
+    date: string;
+    name: string;
+    count: number;
+    distance: number;
 }

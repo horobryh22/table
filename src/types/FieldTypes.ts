@@ -1,1 +1,1 @@
-export type FieldTypes = 'name' | 'count' | 'distance' | '';
+export type FieldTypes = 'name' | 'count' | 'distance';

@@ -4,12 +4,14 @@ import {RowType} from './types';
 
 export const Row = ({item}: RowType) => {
 
+    const date = new Date(item.date);
+
     return (
         <tr>
-            <td>{item.email}</td>
-            <td>{item.firstName}</td>
-            <td>{item.id}</td>
-            <td>{item.id}</td>
+            <td>{date.toLocaleDateString()}</td>
+            <td>{item.name}</td>
+            <td>{item.count}</td>
+            <td>{item.distance}</td>
         </tr>
     );
 };

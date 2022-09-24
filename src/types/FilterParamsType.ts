@@ -1,8 +1,8 @@
 import {FieldTypes} from '../types';
-import {ConditionsType} from '../types';
+import {ConditionType} from '../types';
 
 export type FilterParamsType = {
     selectedColumn: FieldTypes,
-    selectedCondition: ConditionsType,
+    selectedCondition: ConditionType,
     searchValue: string,
 }

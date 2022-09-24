@@ -3,6 +3,7 @@ import {Loader, Pagination, Table, TableFilter} from './components';
 import {itemsAPI, ItemType} from './api';
 import {FieldTypes, FilterParamsType} from './types';
 import {usePagination} from './hooks';
+import {getFilteredData} from './utils';
 
 
 function App() {
@@ -12,13 +13,15 @@ function App() {
     const [items, setItems] = useState<ItemType[]>([]);
 
     const [sort, setSort] = useState<'asc' | 'desc'>('asc');
-    const [sortField, setSortField] = useState<FieldTypes>('');
+    const [sortField, setSortField] = useState<FieldTypes>('count');
 
     const [filterParams, setFilterParams] = useState<FilterParamsType>({
         selectedColumn: 'name',
-        selectedCondition: 'equal',
+        selectedCondition: 'contain',
         searchValue: '',
     });
+
+    const filteredData = getFilteredData(filterParams, items);
 
     const {
         firstContentIndex,
@@ -29,18 +32,19 @@ function App() {
         setPage,
         totalPages,
     } = usePagination({
-        contentPerPage: 15,
-        count: items.length,
+        contentPerPage: 10,
+        count: filteredData.length,
     });
 
-    const filteredData = 1;
-
-    const selectedData = items.slice(firstContentIndex, lastContentIndex);
+    const selectedData = filteredData.slice(firstContentIndex, lastContentIndex);
 
     useEffect(() => {
         setIsLoading(true)
         itemsAPI.getItems().then(res => {
-            setItems(res.data);
+            const filteredData = res.data.sort((a, b) => {
+                return b.count - a.count;
+            });
+            setItems(filteredData);
             setIsLoading(false);
         })
     }, []);
@@ -50,7 +54,14 @@ function App() {
 
         if (field === 'count') {
             itemsClone.sort((a, b) => {
-                return sort === 'asc' ? a.id - b.id : b.id - a.id;
+                return sort === 'asc' ? a.count - b.count : b.count - a.count;
+            });
+            setSort(sort === 'asc' ? 'desc' : 'asc');
+        }
+
+        if (field === 'distance') {
+            itemsClone.sort((a, b) => {
+                return sort === 'asc' ? a.distance - b.distance : b.distance - a.distance;
             });
             setSort(sort === 'asc' ? 'desc' : 'asc');
         }
@@ -58,10 +69,10 @@ function App() {
         if (field === 'name') {
             itemsClone.sort((a, b) => {
                 if (sort === 'asc') {
-                    return (a.firstName > b.firstName) ? 1 : -1;
+                    return (a.name > b.name) ? 1 : -1;
                 }
 
-                return (a.firstName < b.firstName) ? 1 : -1;
+                return (a.name < b.name) ? 1 : -1;
             });
             setSort(sort === 'asc' ? 'desc' : 'asc');
         }
@@ -70,23 +81,13 @@ function App() {
         setSortField(field);
     }
 
-    const getFilteredData = (searchValue: string, items: ItemType[]) => {
-        if (!searchValue) {
-            return items;
-        }
-
-        return items.filter(item => {
-
-        })
-
-    }
-
     if (isLoading) return <Loader/>;
 
     return (
         <div className="container">
             <TableFilter
                 filterParams={filterParams}
+                setFilterParams={setFilterParams}
             />
             <Table
                 items={selectedData}

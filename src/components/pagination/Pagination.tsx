@@ -1,4 +1,5 @@
 import React from 'react';
+import './Pagination.css';
 
 export type PaginationType = {
     totalPages: number;
@@ -37,7 +38,7 @@ export const Pagination = (
 
     return (
         <nav aria-label="...">
-            <ul className="pagination">
+            <ul className="pagination user-pagination">
                 <li className={`page-item ${currentPage === 1 && 'disabled'}`}>
                     <button
                         disabled={currentPage === 1}

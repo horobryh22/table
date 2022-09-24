@@ -1,0 +1,1 @@
+export type ConditionType = 'equal' | 'contain' | 'more' | 'less';

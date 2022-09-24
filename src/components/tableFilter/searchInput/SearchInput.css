@@ -1,0 +1,9 @@
+.error {
+    padding: 5px;
+    height: 20px;
+    color: red;
+    display: flex;
+    align-items: center;
+    margin-top: 22px;
+    margin-left: 10px;
+}
