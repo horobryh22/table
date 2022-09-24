@@ -1,4 +1,4 @@
-import {ItemType} from 'src/api';
+import {ItemType} from '../../../api';
 
 export type RowType = {
     item: ItemType

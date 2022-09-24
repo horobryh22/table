@@ -1,5 +1,9 @@
-import {ItemType} from 'src/api';
+import {ItemType} from '../../api';
+import {FieldTypes} from '../../types';
 
 export type TableType = {
-    items: ItemType []
+    items: ItemType [];
+    onSort: (sortField: FieldTypes) => void;
+    sortField: FieldTypes;
+    sort: 'asc' | 'desc';
 }

@@ -1,0 +1,1 @@
+export type FieldTypes = 'id' | 'email' | 'firstName' | 'lastName' | '';
