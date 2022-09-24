@@ -1,16 +1,8 @@
 import React from 'react';
 import './Pagination.css';
+import {PaginationType} from './types';
 
-export type PaginationType = {
-    totalPages: number;
-    currentPage: number;
-    setPage: (value: number) => void;
-    nextPage: () => void;
-    prevPage: () => void;
-}
-
-export const Pagination = (
-    {
+export const Pagination = ({
         totalPages,
         currentPage,
         setPage,

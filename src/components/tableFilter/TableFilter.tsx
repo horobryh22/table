@@ -1,16 +1,12 @@
 import React, {useState} from 'react';
 import {SearchInput} from './searchInput/SearchInput';
 import {Select} from './select/Select';
-import {FilterParamsType} from '../../types';
 import './TableFilter.css';
+import {FILTER_SELECT_STYLES} from './styles';
+import {TableFilterType} from './types';
 
 const COLUMNS = ['Name', 'Count', 'Distance'];
 const CONDITIONS = ['Equal', 'Contain', 'More', 'Less'];
-
-export type TableFilterType = {
-    filterParams: FilterParamsType
-    setFilterParams: (data: FilterParamsType) => void;
-}
 
 export const TableFilter = ({filterParams, setFilterParams}: TableFilterType) => {
 
@@ -26,12 +22,14 @@ export const TableFilter = ({filterParams, setFilterParams}: TableFilterType) =>
                 initialValue={columnValue}
                 setValue={setColumnValue}
                 disabled={false}
+                style={FILTER_SELECT_STYLES}
             />
             <Select
                 items={CONDITIONS}
                 initialValue={conditionValue}
                 setValue={setConditionValue}
                 disabled={columnValue === 'name'}
+                style={FILTER_SELECT_STYLES}
             />
             <SearchInput
                 setFilterParams={setFilterParams}

@@ -33,5 +33,11 @@ export const getFilteredData = (filterParams: FilterParamsType, items: ItemType[
         })
     }
 
+    if (selectedCondition === 'equal') {
+        return items.filter(item => {
+            return item[selectedColumn] === Number(searchValue);
+        })
+    }
+
     return items;
 }

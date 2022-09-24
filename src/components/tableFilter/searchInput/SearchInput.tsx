@@ -1,16 +1,9 @@
 import React, {ChangeEvent, useState} from 'react';
-import {ConditionType, FieldTypes, FilterParamsType} from '../../../types';
 import './SearchInput.css';
+import {SearchInputType} from './types';
 
-export type SearchInputType = {
-    value: string;
-    setFilterParams: (data: FilterParamsType) => void;
-    columnValue: FieldTypes;
-    conditionValue: ConditionType;
-}
 
-export const SearchInput = (
-    {
+export const SearchInput = ({
         value,
         setFilterParams,
         conditionValue,
@@ -32,7 +25,7 @@ export const SearchInput = (
             return;
         }
 
-        if (!Number(inputValue)) {
+        if (!Number(inputValue) && inputValue !== '0') {
             setError('Enter number');
 
             return;

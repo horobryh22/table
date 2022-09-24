@@ -10,7 +10,7 @@ export const HeadRow = ({onSort, sort, sortField}: HeadRowType) => {
     const mappedColumns = FULL_COLUMNS.map(column => {
         if (column === 'Date') {
             return (
-                <th>
+                <th key={column} style={{width: 200}}>
                     {column}
                 </th>
             )
@@ -18,19 +18,23 @@ export const HeadRow = ({onSort, sort, sortField}: HeadRowType) => {
 
         return (
             <th
+                key={column}
                 onClick={() => onSort(column.toLowerCase() as FieldTypes)}
+                style={{width: 200}}
             >
-                {column}
-                {sortField === column.toLowerCase() && <Arrow sort={sort}/>}
+                <>
+                    {column}
+                    {sortField === column.toLowerCase() && <Arrow sort={sort}/>}
+                </>
             </th>
         )
     })
 
     return (
         <thead>
-        <tr>
-            {mappedColumns}
-        </tr>
+            <tr>
+                {mappedColumns}
+            </tr>
         </thead>
     );
 };

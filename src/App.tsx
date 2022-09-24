@@ -1,25 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import {Loader, Pagination, Table, TableFilter} from './components';
 import {itemsAPI, ItemType} from './api';
 import {FieldTypes, FilterParamsType} from './types';
 import {usePagination} from './hooks';
 import {getFilteredData} from './utils';
+import {Select} from './components/tableFilter/select/Select';
 
+const APP_SELECT_STYLES: CSSProperties = {
+    width: 80,
+    position: 'absolute',
+    bottom: 58,
+    left: 550,
+    fontSize: 16,
+    cursor: 'pointer'
+}
 
 function App() {
 
     const [isLoading, setIsLoading] = useState(false);
-
     const [items, setItems] = useState<ItemType[]>([]);
 
     const [sort, setSort] = useState<'asc' | 'desc'>('asc');
     const [sortField, setSortField] = useState<FieldTypes>('count');
-
     const [filterParams, setFilterParams] = useState<FilterParamsType>({
         selectedColumn: 'name',
         selectedCondition: 'contain',
         searchValue: '',
     });
+
+    const [contentPerPage, setContentPerPage] = useState('10');
 
     const filteredData = getFilteredData(filterParams, items);
 
@@ -32,7 +41,7 @@ function App() {
         setPage,
         totalPages,
     } = usePagination({
-        contentPerPage: 10,
+        contentPerPage: Number(contentPerPage),
         count: filteredData.length,
     });
 
@@ -41,30 +50,19 @@ function App() {
     useEffect(() => {
         setIsLoading(true)
         itemsAPI.getItems().then(res => {
-            const filteredData = res.data.sort((a, b) => {
-                return b.count - a.count;
-            });
-            setItems(filteredData);
+            setItems(res.data);
             setIsLoading(false);
         })
     }, []);
 
+    useEffect(() => {
+        if (!selectedData.length) {
+            setSortField('' as FieldTypes);
+        }
+    }, [selectedData.length])
+
     const onSort = (field: FieldTypes) => {
         const itemsClone = [...items];
-
-        if (field === 'count') {
-            itemsClone.sort((a, b) => {
-                return sort === 'asc' ? a.count - b.count : b.count - a.count;
-            });
-            setSort(sort === 'asc' ? 'desc' : 'asc');
-        }
-
-        if (field === 'distance') {
-            itemsClone.sort((a, b) => {
-                return sort === 'asc' ? a.distance - b.distance : b.distance - a.distance;
-            });
-            setSort(sort === 'asc' ? 'desc' : 'asc');
-        }
 
         if (field === 'name') {
             itemsClone.sort((a, b) => {
@@ -75,8 +73,17 @@ function App() {
                 return (a.name < b.name) ? 1 : -1;
             });
             setSort(sort === 'asc' ? 'desc' : 'asc');
+            setItems(itemsClone);
+            setSortField(field);
+
+            return;
         }
 
+        itemsClone.sort((a, b) => {
+            return sort === 'asc' ? a[field] - b[field] : b[field] - a[field];
+        });
+
+        setSort(sort === 'asc' ? 'desc' : 'asc');
         setItems(itemsClone);
         setSortField(field);
     }
@@ -96,11 +103,18 @@ function App() {
                 sortField={sortField}
             />
             <Pagination
-                totalPages={totalPages}
+                totalPages={totalPages || 1}
                 currentPage={page}
                 setPage={setPage}
                 nextPage={nextPage}
                 prevPage={prevPage}
+            />
+            <Select
+                items={['10', '12']}
+                initialValue={contentPerPage}
+                setValue={setContentPerPage}
+                disabled={false}
+                style={APP_SELECT_STYLES}
             />
         </div>
     );
