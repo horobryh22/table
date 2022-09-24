@@ -8,13 +8,13 @@ export const HeadRow = ({onSort, sort, sortField}: HeadRowType) => {
         <thead>
         <tr>
             <th>Date</th>
-            <th onClick={() => onSort('firstName')}>
+            <th onClick={() => onSort('name')}>
                 Name
-                {sortField === 'firstName' && <Arrow sort={sort}/>}
+                {sortField === 'name' && <Arrow sort={sort}/>}
             </th>
-            <th onClick={() => onSort('id')}>
+            <th onClick={() => onSort('count')}>
                 Count
-                {sortField === 'id' && <Arrow sort={sort}/>}
+                {sortField === 'count' && <Arrow sort={sort}/>}
             </th>
             <th>Distance</th>
         </tr>

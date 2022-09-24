@@ -1,1 +1,1 @@
-export type FieldTypes = 'id' | 'email' | 'firstName' | 'lastName' | '';
+export type FieldTypes = 'name' | 'count' | 'distance' | '';
