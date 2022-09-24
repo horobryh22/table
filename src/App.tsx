@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Loader, Table} from './components';
+import {Loader, Pagination, Table} from './components';
 import {itemsAPI, ItemType} from './api';
 import {FieldTypes} from './types';
+import {usePagination} from './hooks';
 
 
 function App() {
@@ -11,6 +12,19 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [items, setItems] = useState<ItemType[]>([]);
 
+    const {
+        firstContentIndex,
+        lastContentIndex,
+        nextPage,
+        prevPage,
+        page,
+        setPage,
+        totalPages,
+    } = usePagination({
+        contentPerPage: 15,
+        count: items.length,
+    });
+
     useEffect(() => {
         setIsLoading(true)
         itemsAPI.getItems().then(res => {
@@ -18,6 +32,8 @@ function App() {
             setIsLoading(false);
         })
     }, []);
+
+    console.log( page, firstContentIndex, lastContentIndex);
 
     const onSort = (field: FieldTypes) => {
         const itemsClone = [...items];
@@ -49,10 +65,17 @@ function App() {
     return (
         <div className="container">
             <Table
-                items={items}
+                items={items.slice(firstContentIndex, lastContentIndex)}
                 onSort={onSort}
                 sort={sort}
                 sortField={sortField}
+            />
+            <Pagination
+                totalPages={totalPages}
+                currentPage={page}
+                setPage={setPage}
+                nextPage={nextPage}
+                prevPage={prevPage}
             />
         </div>
     );
