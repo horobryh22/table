@@ -66,7 +66,7 @@ export const Pagination = (
                 </ul>
             </div>
             <Select
-                items={['10', '12', '14']}
+                items={['10', '12']}
                 initialValue={contentPerPage}
                 setValue={setContentPerPage}
                 disabled={false}
