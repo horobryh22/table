@@ -1,4 +1,6 @@
 .user-pagination {
-    position: absolute;
-    bottom: 40px;
+    position: fixed;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
 }

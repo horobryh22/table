@@ -1,19 +1,10 @@
-import React, {CSSProperties, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Loader, Pagination, Table, TableFilter} from './components';
 import {itemsAPI, ItemType} from './api';
 import {FieldTypes, FilterParamsType} from './types';
 import {usePagination} from './hooks';
 import {getFilteredData} from './utils';
-import {Select} from './components/tableFilter/select/Select';
 
-const APP_SELECT_STYLES: CSSProperties = {
-    width: 80,
-    position: 'absolute',
-    bottom: 58,
-    left: 550,
-    fontSize: 16,
-    cursor: 'pointer'
-}
 
 function App() {
 
@@ -48,11 +39,20 @@ function App() {
     const selectedData = filteredData.slice(firstContentIndex, lastContentIndex);
 
     useEffect(() => {
-        setIsLoading(true)
-        itemsAPI.getItems().then(res => {
-            setItems(res.data);
-            setIsLoading(false);
-        })
+
+        (async () => {
+            try {
+                setIsLoading(true);
+                const {data} = await itemsAPI.getItems();
+                setItems(data);
+                setIsLoading(false);
+            } catch (e) {
+                console.log(e);
+                setIsLoading(false);
+            }
+
+        })();
+
     }, []);
 
     useEffect(() => {
@@ -108,13 +108,8 @@ function App() {
                 setPage={setPage}
                 nextPage={nextPage}
                 prevPage={prevPage}
-            />
-            <Select
-                items={['10', '12']}
-                initialValue={contentPerPage}
-                setValue={setContentPerPage}
-                disabled={false}
-                style={APP_SELECT_STYLES}
+                contentPerPage={contentPerPage}
+                setContentPerPage={setContentPerPage}
             />
         </div>
     );

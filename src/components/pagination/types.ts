@@ -4,4 +4,6 @@ export type PaginationType = {
     setPage: (value: number) => void;
     nextPage: () => void;
     prevPage: () => void;
+    contentPerPage: string;
+    setContentPerPage: (value: string) => void;
 }
